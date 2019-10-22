@@ -16,6 +16,43 @@ Use this when you need it as part of a chain or automation.
 For one-offs, use COPY ... FROM LOCAL
 See: https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/FlexTables/LoadCSVData.htm
 
+Example use:
+
+Assumes we have an importable library called vertica_custom.py with connection strings for example:
+
+```
+import vertica_python
+
+conn_info = {'host': hostname, 
+             'port': portnum,
+             'user': username,
+             'password': password,
+             'database': 'dbname',
+             # 5 minutes timeout on queries
+             'read_timeout': 300} # in seconds
+
+
+def connect():
+    connection = vertica_python.connect(**conn_info)
+    return connection
+```
+
+Then:
+```
+import vertica_custom
+import upload_to_vertica
+
+rows_uploaded = upload_to_vertica.upload_df(vertica_obj=vertica
+                                  , target_flex_table_name='CSB_CustAcct_20190724'
+                                  , pandas_df=df_latest_cust_acct_encr)
+
+
+# if from CSV
+rows_uploaded = upload_to_vertica.upload_csv(vertica_obj=vertica
+                                  , target_flex_table_name='CSB_CustAcct_20190724'
+                                  , path_to_local_csv='/Users/benny/Downloads/CSB CustAcct/CSB_CustAcct_20190724.csv')
+```
+
 """
 
 

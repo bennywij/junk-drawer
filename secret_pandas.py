@@ -14,7 +14,7 @@ Created on Mon Oct  7 13:12:55 2019
 
 Example Usage:
 ```
-import secret-pandas as sec
+import secret_pandas as sec
 df_encrypted = sec.encrypt_df_columns(df_original, ['col1', 'col2'], None)
 df_decrypted = sec.decrypt_df_columns(df_encrypted, ['col1', 'col2'], 'secret_hex_file.secret')
 ```

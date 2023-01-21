@@ -5,19 +5,17 @@ Created on Mon Jun  6 10:32:36 2022
 
 @author: benny
 """
-
+SENSOR_ID = 128231
 PA_API_Key = "8AF289D3-3772-11EC-B42E-42010A800002"
-PA_URL = "https://api.purpleair.com/v1/sensors/128231"
+PA_URL = "https://api.purpleair.com/v1/sensors/"+str(SENSOR_ID)
 
 try:
+
     import requests
     headers = {"X-API-Key": PA_API_Key}  
-    response = requests.get(PA_URL, headers=headers)   
-    pm25 = response.json()['sensor']['stats']['pm2.5']
-    try: 
-    	humidity = response.json()['sensor']['humidity']
-    except:
-    	humidity = 75
+    response = requests.get(PA_URL, headers=headers)  
+    response_json = response.json()
+
 
 except ImportError:
     # without requests
@@ -27,16 +25,15 @@ except ImportError:
     req.add_header('X-API-Key', PA_API_Key)
     content = urlopen(req).read()
     encoding = urlopen(req).info().get_content_charset('utf-8')
-    response = json.loads(content.decode(encoding))
-
-    pm25 = response['sensor']['stats']['pm2.5']
-
-    try: 
-    	humidity = response['sensor']['humidity']
-    except:
-    	humidity = 75
+    response_json = json.loads(content.decode(encoding))
 
 
+
+pm25 = response_json['sensor']['stats']['pm2.5']
+try: 
+	humidity = response_json['sensor']['humidity']
+except:
+	humidity = 75
 
 
 
